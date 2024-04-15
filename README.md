@@ -1,5 +1,5 @@
 
-### Premium Partners
+### HOW TO SETUP?
 
 - **1.Run git clone**
 - **2.Run composer install**
