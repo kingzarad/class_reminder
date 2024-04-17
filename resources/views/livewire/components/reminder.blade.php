@@ -67,7 +67,10 @@
 
                         </tbody>
                     </table>
+                    {{ $reminder_list->links(data: ['scrollTo' => false]) }}
+
                 </div>
+
             </div>
         </div>
         @include('livewire.components.modal.rem')

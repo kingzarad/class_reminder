@@ -58,6 +58,8 @@
                             @endif
                         </tbody>
                     </table>
+                    {{ $course_list->links(data: ['scrollTo' => false]) }}
+
                 </div>
             </div>
         </div>

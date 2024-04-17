@@ -75,6 +75,8 @@
 
                         </tbody>
                     </table>
+                    {{ $schedule_list->links(data: ['scrollTo' => false]) }}
+
                 </div>
             </div>
         </div>

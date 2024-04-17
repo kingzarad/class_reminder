@@ -61,6 +61,8 @@
 
                         </tbody>
                     </table>
+                    {{ $student_list->links(data: ['scrollTo' => false]) }}
+
                 </div>
             </div>
         </div>

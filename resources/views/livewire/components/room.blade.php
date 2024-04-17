@@ -59,6 +59,8 @@
 
                         </tbody>
                     </table>
+                    {{ $room_list->links(data: ['scrollTo' => false]) }}
+
                 </div>
             </div>
         </div>

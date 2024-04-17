@@ -58,6 +58,8 @@
 
                         </tbody>
                     </table>
+                    {{ $instructor_list->links(data: ['scrollTo' => false]) }}
+
                 </div>
             </div>
         </div>
