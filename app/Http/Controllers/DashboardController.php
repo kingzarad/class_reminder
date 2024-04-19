@@ -103,7 +103,7 @@ class DashboardController extends Controller
             $scheduleDate = Carbon::parse($item->schedule->date);
 
             // Check if the schedule date is one day ahead of the current date
-            if ($scheduleDate->diffInDays($currentDate) === 1 && $item->status == 'on' && $item->status_msg != 0) {
+            if ($currentDate->isSameDay($scheduleDate)  && $item->status == 'on' && $item->status_msg != 0) {
                 $studentName = strtoupper($item->student->name);
                 $startTime = date('g:i A', strtotime($item->schedule->start_time));
                 $endTime = date('g:i A', strtotime($item->schedule->end_time));
