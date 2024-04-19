@@ -22,7 +22,10 @@ class Subject extends Component
     public function saveSubject()
     {
         $validated = $this->validate([
-            'subject_name' => 'required|string|min:3',
+            'subject_name' => ['required', 'string', 'min:3', 'regex:/^((?!([a-zA-Z0-9])\1{2,}).)*$/'],
+        ], [
+            'subject_name.required' => 'The subject name field is required.',
+            'subject_name.regex' => 'The subject name should not contain repeated characters.'
         ]);
 
         $existing = ModelsSubject::where('name', $validated['subject_name'])->exists();
@@ -32,7 +35,7 @@ class Subject extends Component
         }
 
         $data = [
-            'name' => $validated['subject_name'],
+            'name' => strtolower($validated['subject_name']),
         ];
         ModelsSubject::create($data);
         $this->resetInput();
@@ -46,7 +49,7 @@ class Subject extends Component
         ]);
 
         $data = [
-            'name' => $validated['subject_name'],
+            'name' => strtolower($validated['subject_name']),
         ];
         ModelsSubject::where('id', $this->id)->update($data);
         $this->resetInput();

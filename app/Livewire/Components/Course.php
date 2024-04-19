@@ -22,8 +22,12 @@ class Course extends Component
     public function saveCourse()
     {
         $validated = $this->validate([
-            'course_name' => 'required|string|min:3',
+            'course_name' => ['required', 'string', 'min:3', 'regex:/^((?!([a-zA-Z0-9])\1{2,}).)*$/'],
+        ], [
+            'course_name.required' => 'The course name field is required.',
+            'course_name.regex' => 'The course name should not contain repeated characters.'
         ]);
+
 
         $existing = ModelsCourse::where('name', $validated['course_name'])->exists();
         if ($existing) {
@@ -32,7 +36,7 @@ class Course extends Component
         }
 
         $data = [
-            'name' => $validated['course_name'],
+            'name' => strtolower($validated['course_name']),
         ];
         ModelsCourse::create($data);
         $this->resetInput();
@@ -46,7 +50,8 @@ class Course extends Component
         ]);
 
         $data = [
-            'name' => $validated['course_name'],
+            'name' => strtolower($validated['course_name']),
+
         ];
         ModelsCourse::where('id', $this->id)->update($data);
         $this->dispatch('destroyModal', status: 'success', position: 'top', message: 'Course updated succesfully.', modal: '#modalCourseUpdate');

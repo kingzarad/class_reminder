@@ -27,7 +27,8 @@
                                 @foreach ($course_list as $index => $item)
                                     <tr>
                                         <th scope="row">{{ $index + 1 }}</th>
-                                        <td>{{ $item->name }}</td>
+                                        <td>{{ ucwords($item->name) }}</td>
+
                                         <td>
                                             <div class="dropdown d-flex">
                                                 <button class="btn btn-secondary btn-custom btn-sm dropdown-toggle"

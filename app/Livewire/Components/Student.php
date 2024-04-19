@@ -22,13 +22,15 @@ class Student extends Component
     public function saveStudent()
     {
         $validated = $this->validate([
-            'student_name' => 'required|string|min:3',
+            'student_name' => ['required', 'string', 'min:3', 'regex:/^(?!.*([a-zA-Z])\1{2})[a-zA-Z\s]+$/'],
             'student_email' => 'required|string|email'
         ], [
             'student_name.required' => 'The name field is required.',
             'student_email.required' => 'The email field is required.',
-            'student_email.email' => 'The email must be a valid email address.'
+            'student_email.email' => 'The email must be a valid email address.',
+            'student_name.regex' => 'The name field should only contain letters and spaces, and should not have repeated characters.'
         ]);
+
 
         $existing = ModelsStudent::where('name', $validated['student_name'])->where('email', $validated['student_email'])->exists();
         if ($existing) {
@@ -37,7 +39,7 @@ class Student extends Component
         }
 
         $data = [
-            'name' => $validated['student_name'],
+            'name' => strtolower($validated['student_name']),
             'email' => $validated['student_email'],
         ];
         ModelsStudent::create($data);
@@ -57,7 +59,7 @@ class Student extends Component
         ]);
 
         $data = [
-            'name' => $validated['student_name'],
+            'name' =>  strtolower($validated['student_name']),
             'email' => $validated['student_email'],
         ];
 

@@ -3,7 +3,8 @@
         <div class="col-lg-12">
             <div class="d-flex justify-content-between my-3 mx-2">
                 <h3>INSTRUCTOR LIST</h3>
-                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalInstructorAdd">Add</button>
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                    data-bs-target="#modalInstructorAdd">Add</button>
             </div>
         </div>
         <div class="col-lg-12">
@@ -26,7 +27,8 @@
                                 @foreach ($instructor_list as $index => $item)
                                     <tr>
                                         <th scope="row">{{ $index + 1 }}</th>
-                                        <td>{{ $item->name }}</td>
+                                        <td>{{ ucwords($item->name) }}</td>
+
                                         <td>
                                             <div class="dropdown d-flex">
                                                 <button class="btn btn-secondary btn-custom btn-sm dropdown-toggle"

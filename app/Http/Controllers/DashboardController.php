@@ -119,12 +119,12 @@ class DashboardController extends Controller
                     'lastline' => '',
                     'regards' => "Regards, <strong>{$item->schedule->instructor->name}</strong>"
                 ];
-
-                Queue::push(function () use ($item, $details) {
-                    Notification::send($item, new reminderNotif($details));
+                $itemCopy = $item;
+                Queue::push(function () use ($itemCopy, $details) {
+                    Notification::send($itemCopy, new reminderNotif($details));
                     // Update the status_msg to 0 after successfully sending the email
-                    $item->status_msg = 0;
-                    $item->save();
+                    $itemCopy->status_msg = 0;
+                    $itemCopy->save();
                 });
             }
         }

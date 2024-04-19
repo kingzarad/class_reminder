@@ -22,7 +22,10 @@ class Instructor extends Component
     public function saveInstructor()
     {
         $validated = $this->validate([
-            'instructor_name' => 'required|string|min:3',
+            'instructor_name' => ['required', 'string', 'min:3', 'regex:/^(?!.*([a-zA-Z])\1{2})[a-zA-Z\s]+$/'],
+        ], [
+            'instructor_name.required' => 'The name field is required.',
+            'instructor_name.regex' => 'The name field should only contain letters and spaces, and should not have repeated characters.'
         ]);
 
         $existing = ModelsInstructor::where('name', $validated['instructor_name'])->exists();
@@ -30,10 +33,10 @@ class Instructor extends Component
             $this->dispatch('messageModal', status: 'warning', position: 'top', message: 'Instructor already exist.');
             return;
         }
-
         $data = [
-            'name' => $validated['instructor_name'],
+            'name' => strtolower($validated['instructor_name']),
         ];
+
         ModelsInstructor::create($data);
         $this->resetInput();
         $this->dispatch('messageModal', status: 'success', position: 'top', message: 'Instructor save succesfully.');
@@ -46,8 +49,9 @@ class Instructor extends Component
         ]);
 
         $data = [
-            'name' => $validated['instructor_name'],
+            'name' => strtolower($validated['instructor_name']),
         ];
+
         ModelsInstructor::where('id', $this->id)->update($data);
         $this->resetInput();
         $this->dispatch('destroyModal', status: 'success', position: 'top', message: 'Instructor updated succesfully.', modal: '#modalInstructorUpdate');

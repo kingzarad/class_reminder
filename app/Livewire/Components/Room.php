@@ -22,7 +22,10 @@ class Room extends Component
     public function saveRoom()
     {
         $validated = $this->validate([
-            'room_name' => 'required|string|min:3',
+            'room_name' => ['required', 'string', 'min:3', 'regex:/^((?!([a-zA-Z])\1{2,}).)*$/'],
+        ], [
+            'room_name.required' => 'The room name field is required.',
+            'room_name.regex' => 'The room name field should not contain repeated characters.',
         ]);
 
         $existing = ModelsRoom::where('name', $validated['room_name'])->exists();
