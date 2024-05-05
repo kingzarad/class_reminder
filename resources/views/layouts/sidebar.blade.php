@@ -46,9 +46,9 @@
                     <i class="fas fa-plus-circle"></i> <span class="ms-1 d-none d-sm-inline">Time</span>
                 </a>
             </li>
-            <li class="d-none">
-                <a href="{{ route('list') }}" class="nav-link px-0 align-middle">
-                    <i class="fas fa-plus-circle"></i> <span class="ms-1 d-none d-sm-inline">List</span>
+            <li >
+                <a href="{{ route('event') }}" class="nav-link px-0 align-middle">
+                    <i class="fas fa-plus-circle"></i> <span class="ms-1 d-none d-sm-inline">Event</span>
                 </a>
             </li>
             <li >

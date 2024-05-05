@@ -29,5 +29,5 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
     Route::get('/room', [DashboardController::class, 'Room'])->name('room');
     Route::get('/instructor', [DashboardController::class, 'Instructor'])->name('instructor');
     Route::get('/time', [DashboardController::class, 'Time'])->name('time');
-    Route::get('/list', [DashboardController::class, 'List'])->name('list');
+    Route::get('/event', [DashboardController::class, 'Event'])->name('event');
 });

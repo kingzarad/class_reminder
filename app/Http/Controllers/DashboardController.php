@@ -87,9 +87,9 @@ class DashboardController extends Controller
             ->header('Expires', '0');
     }
 
-    public function List()
+    public function Event()
     {
-        return response()->view('components/list')->header('Cache-Control', 'no-cache, no-store, must-revalidate')
+        return response()->view('components/event')->header('Cache-Control', 'no-cache, no-store, must-revalidate')
             ->header('Pragma', 'no-cache')
             ->header('Expires', '0');
     }
