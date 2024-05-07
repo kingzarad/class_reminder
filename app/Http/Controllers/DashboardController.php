@@ -147,7 +147,7 @@ class DashboardController extends Controller
             // Check if the schedule date is one day ahead of the current date
             if ($currentDate->isSameDay($scheduleDate)  && $item->status == 'on' && $item->status_msg != 0) {
                 $studentName = strtoupper($item->student->name);
-                $eventName = strtoupper($item->student->name);
+                $eventName = strtoupper($item->event);
 
                 $details = [
                     'greeting' => "Hello, {$studentName}",
