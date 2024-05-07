@@ -2,6 +2,8 @@
 
 namespace App\Livewire\Components;
 
+use App\Models\Event as ModelsEvent;
+use App\Models\student;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Livewire\WithoutUrlPagination;
@@ -11,73 +13,76 @@ class Event extends Component
 {
     use WithPagination, WithoutUrlPagination;
 
-    public $student_id, $schedule_id, $email, $id;
+    public $student_id, $event, $date, $id;
 
     public function render()
     {
-        return view('livewire.components.event');
+        $student = student::orderBy('created_at', 'DESC')->get();
+        $event_list = ModelsEvent::orderBy('created_at', 'DESC')->paginate(10);
+        return view('livewire.components.event', ['student'=>$student, 'event_list' => $event_list]);
     }
 
-    public function saveReminder()
+    public function saveEvent()
     {
         $validated = $this->validate([
             'student_id' => 'required',
-            'schedule_id' => 'required',
-            'email' => 'required',
+            'event' => 'required',
+            'date' => 'required',
         ]);
 
-        $existing = ModelsReminder::where('student_id', $validated['student_id'])->where('schedule_id', $validated['schedule_id'])->exists();
+        $existing = ModelsEvent::where('student_id', $validated['student_id'])->exists();
         if ($existing) {
-            $this->dispatch('messageModal', status: 'warning', position: 'top', message: 'Reminder already exist.');
+            $this->dispatch('messageModal', status: 'warning', position: 'top', message: 'Event already exist.');
             return;
         }
 
         $data = [
             'student_id' => $validated['student_id'],
-            'schedule_id' => $validated['schedule_id'],
+            'event' => $validated['event'],
+            'date' => $validated['date'],
             'status' => 'on',
         ];
-        ModelsReminder::create($data);
+        ModelsEvent::create($data);
         $this->resetInput();
-        $this->dispatch('messageModal', status: 'success', position: 'top', message: 'Reminder save succesfully.');
+        $this->dispatch('messageModal', status: 'success', position: 'top', message: 'Event save succesfully.');
     }
 
-    public function deleteReminder(int $id)
+    public function deleteEvent(int $id)
     {
         $this->id = $id;
     }
 
-    public function updateOnReminder(int $id)
+    public function updateOnEvent(int $id)
     {
         $data = [
             'status' => 'off',
         ];
-        ModelsReminder::where('id', $id)->update($data);
+        ModelsEvent::where('id', $id)->update($data);
 
-        $this->dispatch('messageModal', status: 'warning', position: 'top', message: 'Reminder: This reminder cannot receive email notifications.');
+        $this->dispatch('messageModal', status: 'warning', position: 'top', message: 'Reminder: This event cannot receive email notifications.');
     }
 
-    public function updateOffReminder(int $id)
+    public function updateOffEvent(int $id)
     {
         $data = [
             'status' => 'on',
         ];
-        ModelsReminder::where('id', $id)->update($data);
-        $this->dispatch('messageModal', status: 'success', position: 'top', message: 'Reminder: This reminder can receive email notifications.');
+        ModelsEvent::where('id', $id)->update($data);
+        $this->dispatch('messageModal', status: 'success', position: 'top', message: 'Reminder: This event can receive email notifications.');
     }
 
-    public function destroyReminder()
+    public function destroyEvent()
     {
-        $value = ModelsReminder::find($this->id);
+        $value = ModelsEvent::find($this->id);
 
         if (!$value) {
-            $this->dispatch('destroyModal', status: 'warning', position: 'top', message: 'Reminder not found!', modal: '#modalReminderDelete');
+            $this->dispatch('destroyModal', status: 'warning', position: 'top', message: 'Event not found!', modal: '#modalEventDelete');
             return;
         }
 
         $value->delete();
 
-        $this->dispatch('destroyModal', status: 'warning',  position: 'top', message: 'Reminder delete successfully.', modal: '#modalReminderDelete');
+        $this->dispatch('destroyModal', status: 'warning',  position: 'top', message: 'Event delete successfully.', modal: '#modalEventDelete');
     }
 
     public function closeModal()
@@ -85,21 +90,9 @@ class Event extends Component
         $this->resetInput();
     }
 
-    public function updateEmail()
-    {
-
-        if (!empty($this->student_id)) {
-            $student = student::find($this->student_id);
-            if ($student) {
-                $this->email = $student->email;
-            }
-        } else {
-            $this->email = null;
-        }
-    }
 
     private function resetInput()
     {
-        $this->reset(['student_id', 'schedule_id', 'email']);
+        $this->reset(['student_id', 'event', 'date']);
     }
 }
